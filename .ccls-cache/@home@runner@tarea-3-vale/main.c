@@ -13,7 +13,7 @@ typedef struct
   int capacity;
 } ListaTareas;
 
-
+lLALALLAKLDSLKJNADSKKJDFNKAJSD
 void registrarTarea()
 {
   
