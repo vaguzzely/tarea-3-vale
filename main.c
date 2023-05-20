@@ -65,3 +65,125 @@ int establecerPrecedencia(GrafoTareas* grafo, const char* nombreTarea1, const ch
     tarea2->numPrecedentes++;
   return 1;
 }
+
+
+//esta función corresponde a la opción 4 del menú, sirve para marcar una tarea como completada (y eliminarla), si es precedente de otra tarea, esta también se elimina del [] de precedentes de la tarea con la que tenga relación.
+
+int marcarTareaCompletada(GrafoTareas* grafo, const char* nombre) {
+
+  //se verifica si la tarea existe, utilizando la función auxiliar buscarTareaPorNombre
+    Tarea* tarea = buscarTareaPorNombre(grafo, nombre);
+
+    if (tarea == NULL) {
+        printf("Error: No se encontró la tarea especificada. :c\n");
+        return 0;
+    }
+  
+
+    // si la encuentra, elimina la tarea del grafo
+    int indiceTarea = tarea->indice;
+    free(grafo->nodos[indiceTarea]);
+
+    // se mueven los nodos restantes una posición hacia arriba
+    for (int i = indiceTarea + 1; i < grafo->numNodos; i++) {
+        grafo->nodos[i - 1] = grafo->nodos[i];
+        grafo->nodos[i - 1]->indice = i - 1; // se actualiza el índice del nodo
+    }
+
+    grafo->numNodos--; // se actualiza el número de nodos
+
+    // se actualizan los precedentes de las tareas restantes
+    for (int i = 0; i < grafo->numNodos; i++) {
+        Tarea* tareaActual = grafo->nodos[i];
+        for (int j = 0; j < tareaActual->numPrecedentes; j++) {
+            if (tareaActual->precedentes[j]->indice == indiceTarea) {
+                // elimina la tarea completada de los precedentes
+                for (int k = j; k < tareaActual->numPrecedentes - 1; k++) {
+                    tareaActual->precedentes[k] = tareaActual->precedentes[k + 1];
+                }
+                tareaActual->numPrecedentes--;
+                break;
+            }
+        }
+    }
+
+    // actualiza los precedentes en la copia de los nodos
+    for (int i = 0; i < grafo->numNodos; i++) {
+        Tarea* tareaActual = grafo->nodos[i];
+        for (int j = 0; j < tareaActual->numPrecedentes; j++) {
+            if (tareaActual->precedentes[j]->indice > indiceTarea) {
+                tareaActual->precedentes[j]->indice--; // actualiza el índice del precedente
+            }
+        }
+    }
+  return 1;
+}
+
+
+/*
+int compararPrioridad(const void* a, const void* b) {
+    Tarea* tarea1 = *(Tarea**)a;
+    Tarea* tarea2 = *(Tarea**)b;
+
+    // ordena en orden de prioridad
+    return tarea1->prioridad - tarea2->prioridad;
+}
+*/
+void ordenamientoTopologicoAuxPrecedencia(Tarea* tarea, int visitado[], int nivel) {
+    visitado[tarea->indice] = 1; // Marcar la tarea como visitada
+
+    // recorre las tareas precedentes y se llama recursivamente
+    for (int i = 0; i < tarea->numPrecedentes; i++) {
+        Tarea* precedente = tarea->precedentes[i];
+        if (!visitado[precedente->indice]) {
+            ordenamientoTopologicoAuxPrecedencia(precedente, visitado, nivel + 1);
+        }
+    }
+
+    // muestra la tarea actual con su nivel y precedentes
+    printf("%*s- %s (Prioridad: %d)\n", nivel * 2, "", tarea->nombre, tarea->prioridad);
+}
+
+//función auxiliar que compara la prioridad y precedencia de las tareas, de esta forma se imprime de forma ordenada cuando se llama a mostrar tareas
+int compararPrioridadPrecedencia(const void* a, const void* b) {
+    Tarea* tarea1 = *(Tarea**)a;
+    Tarea* tarea2 = *(Tarea**)b;
+
+    // Comparar primero por precedencia
+    if (tarea1->numPrecedentes != tarea2->numPrecedentes) {
+        return tarea1->numPrecedentes - tarea2->numPrecedentes;
+    }
+
+    // si tienen la misma precedencia, comparar por prioridad
+    return tarea1->prioridad - tarea2->prioridad;
+}
+
+
+void mostrarTareas(GrafoTareas* grafo) {
+    printf("Tareas por hacer, ordenadas por prioridad y precedencia:\n");
+
+    // creo un arreglo auxiliar para copiar los nodos del grafo
+    Tarea* tareasOrdenadas[grafo->numNodos];
+    for (int i = 0; i < grafo->numNodos; i++) {
+        tareasOrdenadas[i] = grafo->nodos[i];
+    }
+
+    // se ordenan las tareas 
+    qsort(tareasOrdenadas, grafo->numNodos, sizeof(Tarea*), compararPrioridadPrecedencia);
+
+    // imprimir las tareas ordenadas con su número correspondiente
+    for (int i = 0; i < grafo->numNodos; i++) {
+        Tarea* tarea = tareasOrdenadas[i];
+        printf("%d. %s (Prioridad: %d)", i + 1, tarea->nombre, tarea->prioridad);
+        if (tarea->numPrecedentes > 0) {
+            printf(" - Precedente: ");
+            for (int j = 0; j < tarea->numPrecedentes; j++) {
+                printf("%s", tarea->precedentes[j]->nombre);
+                if (j < tarea->numPrecedentes - 1) {
+                    printf(", ");
+                }
+            }
+        }
+        printf("\n");
+    }
+}
