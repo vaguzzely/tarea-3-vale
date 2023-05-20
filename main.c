@@ -24,3 +24,26 @@ GrafoTareas* crearGrafoTareas() {
     grafo->numNodos = 0;
     return grafo;
 }
+
+//función que agrega la tarea ingresada por el usuario
+void agregarTarea(GrafoTareas* grafo, const char* nombre, int prioridad) {
+    Tarea* nuevaTarea = (Tarea*)malloc(sizeof(Tarea));
+    strcpy(nuevaTarea->nombre, nombre);
+    nuevaTarea->prioridad = prioridad;
+    nuevaTarea->precedentes = NULL;
+    nuevaTarea->numPrecedentes = 0;
+    nuevaTarea->indice = grafo->numNodos; // Asignar el índice de la tarea
+    
+    grafo->nodos[grafo->numNodos] = nuevaTarea;
+    grafo->numNodos++;
+}
+
+//función auxiliar para la búsqueda de la tarea a través del nombre, esta se utiliza principalmente al momento de establecer precedencia ya que en esa función no se puede establecer precedencia entre tareas no existentes (que no se han ingresado con anterioriodad por el usuario)
+Tarea* buscarTareaPorNombre(GrafoTareas* grafo, const char* nombre) {
+    for (int i = 0; i < grafo->numNodos; i++) {
+        if (strcmp(grafo->nodos[i]->nombre, nombre) == 0) {
+            return grafo->nodos[i];
+        }
+    }
+    return NULL;
+}
