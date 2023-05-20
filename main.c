@@ -47,3 +47,21 @@ Tarea* buscarTareaPorNombre(GrafoTareas* grafo, const char* nombre) {
     }
     return NULL;
 }
+
+
+//función que establece la precedencia entre tareas, se le pide al usuario ingresar el nombre de dos tareas (ya ingresadas con anterioridad al programa), la primera que se ingresa es la que será precedente de la segunda que se ingresa
+
+int establecerPrecedencia(GrafoTareas* grafo, const char* nombreTarea1, const char* nombreTarea2) {
+    Tarea* tarea1 = buscarTareaPorNombre(grafo, nombreTarea1);
+    Tarea* tarea2 = buscarTareaPorNombre(grafo, nombreTarea2);
+
+    if (tarea1 == NULL || tarea2 == NULL) {
+        printf("Error: No se encontró alguna de las tareas especificadas.\n");
+        return 0;
+    }
+  
+    tarea2->precedentes = realloc(tarea2->precedentes, (tarea2->numPrecedentes + 1) * sizeof(Tarea*));
+    tarea2->precedentes[tarea2->numPrecedentes] = tarea1;
+    tarea2->numPrecedentes++;
+  return 1;
+}
