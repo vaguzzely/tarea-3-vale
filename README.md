@@ -8,6 +8,9 @@ Link repositorio de github: https://github.com/vaguzzely/tarea3ValentinaGuzm-nEl
 Link replit: https://replit.com/join/avhfzlwwyj-vaguzzely     ó      https://replit.com/@vaguzzely/tarea3ValentinaGuzmanElgueta#main.c
 
 
+₊✩°｡⋆˚⁺para clonar el programa⁺˚⋆｡°✩₊
+Lo primero que hay que hacer, es en el repositorio de GitHub, apretar el botón que dice < > Code y copiar el link que se encuenta abajo de donde dice HTTPS. Yo uso Replit así que lo que se hace después es crear un nuevo repl, y seleccionar la opción Import from Github, y pegar el link previamente copiado en la sección GitHub URL, luego seleccionamos el botón azul Import from Github y el código se importará automáticamente, también, solamente con apretar Run el código ya se compila solo y funciona de manera correcta. (｡˃ ᵕ ˂ )
+
 Coevaluación:
 
 no aplica
@@ -89,7 +92,8 @@ Descripción: Muestra las tareas en el orden correspondiente, respetando las rel
 Esta función trabaja correctamente.
 
 ---------------------------------------------------------------------------------
-(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )
+(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )
+(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )(｡˃ ᵕ ˂ )
 
 La tarea no tiene implementado un archivo del tipo grafos.c o grafos.h porque al hacerlo, en el main no quedaba ninguna función que se pedía para la tarea, tan solo quedaba el menú, por lo tanto
 no quise que quedara así y dejé todo en un mismo archivo main, espero no hayan inconvenientes, pero de así serlo, agradecería un comentario de retroalimentación para comprender mejor el tema c:,
