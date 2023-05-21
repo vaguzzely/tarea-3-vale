@@ -6,7 +6,7 @@
 typedef struct Tarea {
     char nombre[50];
     int prioridad;
-    struct Tarea** precedentes; //array
+    struct Tarea** precedentes; //
     int numPrecedentes;
     int indice;
 } Tarea;
@@ -158,20 +158,20 @@ int compararPrioridadPrecedencia(const void* a, const void* b) {
     return tarea1->prioridad - tarea2->prioridad;
 }
 
-
+//muestra las tareas
 void mostrarTareas(GrafoTareas* grafo) {
     printf("Tareas por hacer, ordenadas por prioridad y precedencia:\n");
 
-    // creo un arreglo auxiliar para copiar los nodos del grafo
+    // crear una copia de las tareas del grafo
     Tarea* tareasOrdenadas[grafo->numNodos];
     for (int i = 0; i < grafo->numNodos; i++) {
         tareasOrdenadas[i] = grafo->nodos[i];
     }
 
-    // se ordenan las tareas 
+    // ordena las tareas por prioridad y precedencia
     qsort(tareasOrdenadas, grafo->numNodos, sizeof(Tarea*), compararPrioridadPrecedencia);
 
-    // imprimir las tareas ordenadas con su número correspondiente
+    // imprime las tareas en orden y con su número correspondiente c:
     for (int i = 0; i < grafo->numNodos; i++) {
         Tarea* tarea = tareasOrdenadas[i];
         printf("%d. %s (Prioridad: %d)", i + 1, tarea->nombre, tarea->prioridad);
@@ -186,4 +186,66 @@ void mostrarTareas(GrafoTareas* grafo) {
         }
         printf("\n");
     }
+}
+
+
+int main() {
+    GrafoTareas* grafo = crearGrafoTareas();
+
+    int opcion;
+    char nombre[50];
+    int prioridad;
+    char tarea1[50];
+    char tarea2[50];
+   // char nombre_archivo[100];
+
+    do {
+        printf("\nBienvenido ૮ ˶ᵔ ᵕ ᵔ˶ ა\n");
+        printf("\n ₊✩°｡⋆˚⁺Este programa te ayudará a organizar tus tareas por hacer. El menú te permite hacer diversas cosas, espero te guste ⁺˚⋆｡°✩₊\n");
+        printf("\n ₊✩°｡⋆˚⁺ ₊✩°｡⋆˚⁺Menú⁺˚⋆｡°✩₊⁺˚⋆｡°✩₊\n");
+        printf("1. Agregar tarea\n");
+        printf("2. Establecer precedencia entre tareas\n");
+        printf("3. Mostrar tareas por hacer\n");
+        printf("4. Marcar tarea como completada\n");
+        printf("5. Salir\n");
+        printf("Ingrese una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                printf("Ingrese el nombre de la tarea: ");
+                scanf("%s", nombre);
+                printf("Ingrese la prioridad de la tarea: ");
+                scanf("%d", &prioridad);
+                agregarTarea(grafo, nombre, prioridad);
+                printf("Tarea agregada exitosamente. (>ᴗ<)\n");
+                break;
+            case 2:
+                printf("Ingrese el nombre de la tarea precedente: ");
+                scanf("%s", tarea1);
+                printf("Ingrese el nombre de la tarea que debe realizarse después: ");
+                scanf("%s", tarea2);
+                if (establecerPrecedencia(grafo, tarea1, tarea2) == 1){
+                  printf("Precedencia establecida exitosamente.(>ᴗ<)\n");
+                    }
+                break;
+            case 3:
+                mostrarTareas(grafo);
+                break;
+            case 4:
+                printf("Ingrese el nombre de la tarea completada: ");
+                scanf("%s", nombre);
+                if (marcarTareaCompletada(grafo, nombre) == 1){
+                printf("Tarea marcada como completada.(>ᴗ<)\n");}
+                break;
+            case 5:
+                printf("Saliendo del programa...⸜(｡˃ ᵕ ˂ )⸝\n");
+                break;
+            default:
+                printf("Opción inválida. Intente nuevamente.(ᴗ_ ᴗ。)\n");
+        }
+    
+    } while (opcion != 5);
+  
+  return 0;
 }
